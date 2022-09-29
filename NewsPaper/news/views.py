@@ -1,9 +1,10 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, User
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, ProfileEdit
 from django.urls import reverse_lazy
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 class PostsList(ListView):
@@ -49,19 +50,29 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    permission_required = ('news.add_post')
 
 
-class PostEdit(UpdateView):
+class PostEdit(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    permission_required = ('news.change_post')
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
+    success_url = reverse_lazy('post_list')
+    permission_required = ('news.delete_post')
+
+
+class ProfileUserEdit(LoginRequiredMixin, UpdateView):
+    form_class = ProfileEdit
+    model = User
+    template_name = 'profile_edit.html'
     success_url = reverse_lazy('post_list')

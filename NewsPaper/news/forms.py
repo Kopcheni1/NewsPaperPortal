@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, User
 from django.core.exceptions import ValidationError
 
 
@@ -24,3 +24,14 @@ class PostForm(forms.ModelForm):
            )
 
        return cleaned_data
+
+
+class ProfileEdit(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+            'email',
+            'username',
+        ]
