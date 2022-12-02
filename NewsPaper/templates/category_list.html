@@ -10,12 +10,10 @@ Posts
 {% block content %}
    <h1>Все новости</h1>
    <h3>{% current_time '%b %d %Y' %}</h3>
-   <a href="http://127.0.0.1:8000/news/search/">Поиск новостей</a>
-   {% if is_not_subscriber %}
-       <p class="text-center"><a href="{% url 'subscribe' cat.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
-   {% endif %}
-<hr>
-
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
+    {% endif %}
+   <hr>
    {% if posts %}
        <table>
            <tr>
@@ -26,7 +24,7 @@ Posts
 
            </tr>
 
-           {% for post in posts %}
+           {% for post in category_list %}
            <tr>
                <td><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
                <td>{% for cat in post.postCategory.all%}
