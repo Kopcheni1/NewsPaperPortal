@@ -1,12 +1,14 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Post, User, Category
 from .filters import PostFilter
 from .forms import PostForm, ProfileEdit
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+
+from .tasks import notify_weekly, notify_about_new_post
 
 
 class PostsList(ListView):
@@ -105,3 +107,15 @@ def subscribe(request, pk):
 
     message = 'Вы успешно подписались на рассылку новостей категории'
     return render(request, 'subscribe.html', {'category': postCategory, 'message': message})
+
+
+class WeekView(View):
+    def get(self, request):
+        notify_about_new_post.delay()
+        return redirect("/")
+
+
+class WeekViews(View):
+    def get(self, request):
+        notify_weekly.delay()
+        return redirect("/")
