@@ -1,2 +1,3 @@
 # NewsPaperPortal
-All D.3.6 changes marked. All tasks complete.
+All D.13 changes made in settings.
+Logs working well
