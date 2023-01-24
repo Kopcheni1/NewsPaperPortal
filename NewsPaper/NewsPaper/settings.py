@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)2e@g*6dua7-fa9jfqf0^$*lmin*(xqby7i-d(70n0a0$w_os-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -186,6 +186,10 @@ CACHES = {
     }
 }
 
+ADMINS = [
+    ('Robert', 'feron.baronus@gmail.com')
+]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -249,7 +253,7 @@ LOGGING = {
             'filename': 'errors.log',
         },
         'security_log_file': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'security_log_formatter',
             'filename': 'security.log',
@@ -264,6 +268,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console_debug', 'console_warning', 'console_error_critical', 'general_log_file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
@@ -288,7 +293,7 @@ LOGGING = {
         },
         'django.security': {
             'handlers': ['security_log_file'],
-            'level': 'WARNING',
+            'level': 'INFO',
             'propagate': False,
         },
     }
